@@ -1,4 +1,4 @@
-class Stack {
+export default class Stack {
   constructor() {
     this.items = [];
     this.count = 0;
@@ -13,9 +13,9 @@ class Stack {
   }
 
   // Return and remove top element in stack
-  // Return undefined if stack is empty
+  // Return null if stack is empty
   pop() {
-    if (this.count == 0) return undefined;
+    if (this.count == 0) return null;
     let deleteItem = this.items[this.count - 1];
     this.count--;
     console.log(`${deleteItem} removed`);
@@ -60,24 +60,3 @@ class Stack {
 
 const stack = new Stack();
 
-stack.isEmpty();
-
-stack.push(100);
-stack.push(200);
-
-stack.peek();
-
-stack.push(300);
-
-console.log(stack.print());
-
-stack.pop();
-stack.pop();
-
-stack.clear();
-
-console.log(stack.print());
-
-stack.size();
-
-stack.isEmpty();
