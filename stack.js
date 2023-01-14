@@ -1,46 +1,109 @@
+// export default class Stack {
+//   constructor() {
+//     this.items = [];
+//   }
+
+//   /**
+//    * - Add element to top of stack
+//    */
+//   push(element) {
+//     this.items.push(element);
+//   }
+
+//   /**
+//    * - Return and remove top element in stack
+//    * - Return "Underflow" if stack is empty
+//    */
+//   pop() {
+//     if (this.items.length == 0) {
+//       return "Underflow";
+//     }
+//     return this.items.pop();
+//   }
+
+//   /**
+//    * - Check top element in stack w/o removing it
+//    */
+//   peek() {
+//     return this.items[this.items.length - 1];
+//   }
+
+//   // helper methods
+//   isEmpty() {
+//     return this.items.length == 0;
+//   }
+
+//   /**
+//    * - Prints out items in stack
+//    */
+//   print() {
+//     var str = "";
+//     for (var i = 0; i < this.items.length; i++) {
+//       str += this.items[i] + " ";
+//     }
+//     return str;
+//   }
+
+//   /**
+//    * - Returns length of stack
+//    * - Returns 0 if stack is empty
+//    */
+//   length() {
+//     return this.items.length;
+//   }
+// }
+
+// export default class Stack {
+//   constructor() {
+//     this.items = [];
+//     this.length = 0;
+//   }
+
+//   push(item) {
+//     this.items.push(item);
+//     this.length++;
+//   }
+
+//   pop() {
+//     this.length--;
+//     return this.items.pop();
+//   }
+
+//   peek() {
+//     return this.items[this.items.length - 1];
+//   }
+
+//   isEmpty() {
+//     return this.items.length === 0;
+//   }
+// }
+
 export default class Stack {
   constructor() {
     this.items = [];
   }
 
-  /**
-   * - Add element to top of stack
-   */
-  push(element) {
-    this.items.push(element);
+  push(item) {
+    this.items.push(item);
   }
 
-  /**
-   * - Return and remove top element in stack
-   * - Return "Underflow" if stack is empty
-   */
   pop() {
-    if (this.items.length == 0) {
-      return "Underflow";
-    }
     return this.items.pop();
   }
 
-  /**
-   * - Check top element in stack w/o removing it
-   */
   peek() {
     return this.items[this.items.length - 1];
   }
 
-  // helper methods
   isEmpty() {
-    return this.items.length == 0;
+    return this.items.length === 0;
   }
 
-  print() {
-    var str = "";
-    for (var i = 0; i < this.items.length; i++) {
-      str += this.items[i] + " ";
-    }
-    return str;
+  length() {
+    return this.items.length;
   }
 }
+
 
 // // creating object for stack class
 // var stack = new Stack();
