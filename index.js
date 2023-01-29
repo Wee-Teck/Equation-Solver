@@ -423,117 +423,206 @@ function detectLoop(x) {
 // }
 
 // Completed with comments
+// /**
+//  * This function converts an infix notation to postfix notation
+//  * @param {string} infix - the infix notation to convert
+//  * @return {string} postfix - the postfix notation
+//  */
+// function infixToPostfix(infix) {
+//   // remove whitespaces from the infix notation
+//   infix = infix.replace(/\s/g, "");
+//   // define the precedence of operators
+//   const precedence = { "*": 3, "/": 3, "+": 2, "-": 2, "^": 4 };
+//   // create a stack to hold operators
+//   const stack = new Stack();
+//   // initialize the postfix notation as an empty string
+//   let postfix = "";
+//   let prev = "";
+//   // initialize a variable to keep track of the number of open parenthesis
+//   let openParenthesis = 0;
+//   // iterate through the infix notation
+//   for (let i = 0; i < infix.length; i++) {
+//     let char = infix[i];
+//     // if the character is a number, add it to the postfix notation
+//     if (!isNaN(char)) {
+//       postfix += char;
+//       if (!isNaN(prev)) postfix;
+//       prev = char;
+//       // if the character is an operator
+//     } else if (char in precedence) {
+//       // while the stack is not empty and the current operator has lower or equal precedence to the operator at the top of the stack
+//       while (!stack.isEmpty() && precedence[char] <= precedence[stack.peek()]) {
+//         // pop the operator at the top of the stack and add it to the postfix notation
+//         postfix += " " + stack.pop();
+//       }
+//       // add a space after the operator
+//       postfix += " ";
+//       // push the current operator onto the stack
+//       stack.push(char);
+//       prev = char;
+//       // if the character is an open parenthesis
+//     } else if (char === "(") {
+//       // increment the openParenthesis counter
+//       openParenthesis++;
+//       // push the parenthesis onto the stack
+//       stack.push(char);
+//       prev = char;
+//       // if the character is a close parenthesis
+//     } else if (char === ")") {
+//       // decrement the openParenthesis counter
+//       openParenthesis--;
+//       // if the openParenthesis counter is less than 0, throw an error
+//       if (openParenthesis < 0) {
+//         throw new Error(`Mismatched Parentheses in infix expression`);
+//       }
+//       // while the stack is not empty and the top of the stack is not an open parenthesis
+//       while (!stack.isEmpty() && stack.peek() !== "(") {
+//         // pop the operator at the top of the stack and add it to the postfix notation
+//         postfix += " " + stack.pop();
+//       }
+//       //pop the open parenthesis
+//       stack.pop();
+//       prev = char;
+//       // if the character is not a number, operator or parenthesis
+//     } else {
+//       // throw an error with the invalid character
+//       throw new Error(`Invalid character ${char} in infix expression`);
+//     }
+//   }
+//   // if the openParenthesis counter is not 0, throw an error
+//   if (openParenthesis !== 0) {
+//     throw new Error(`Mismatched Parentheses in infix expression`);
+//   }
+//   // while the stack is not empty
+//   while (!stack.isEmpty()) {
+//     // pop the operator at the top of the stack and add it to the postfix notation
+//     postfix += " " + stack.pop();
+//   }
+//   // return the postfix notation
+//   return postfix;
+// }
+
 /**
  * This function converts an infix notation to postfix notation
  * @param {string} infix - the infix notation to convert
  * @return {string} postfix - the postfix notation
  */
 function infixToPostfix(infix) {
-  // remove whitespaces from the infix notation
-  infix = infix.replace(/\s/g, "");
-  // define the precedence of operators
-  const precedence = { "*": 3, "/": 3, "+": 2, "-": 2, "^": 4 };
-  // create a stack to hold operators
-  const stack = new Stack();
-  // initialize the postfix notation as an empty string
-  let postfix = "";
-  let prev = "";
-  // initialize a variable to keep track of the number of open parenthesis
-  let openParenthesis = 0;
-  // iterate through the infix notation
-  for (let i = 0; i < infix.length; i++) {
-    let char = infix[i];
-    // if the character is a number, add it to the postfix notation
-    if (!isNaN(char)) {
-      postfix += char;
-      if (!isNaN(prev)) postfix;
-      prev = char;
-      // if the character is an operator
-    } else if (char in precedence) {
-      // while the stack is not empty and the current operator has lower or equal precedence to the operator at the top of the stack
-      while (!stack.isEmpty() && precedence[char] <= precedence[stack.peek()]) {
-        // pop the operator at the top of the stack and add it to the postfix notation
-        postfix += " " + stack.pop();
+  if (!/^[\d+\-*/^()\s]*$/.test(infix) || infix.trim() == "") {
+    this.setResult(EquationSolver.ERROR_INVALID_STRING());
+  } else {
+    // remove whitespaces from the infix notation
+    infix = infix.replace(/\s/g, "");
+    // define the precedence of operators
+    const precedence = { "*": 3, "/": 3, "+": 2, "-": 2, "^": 4 };
+    // create a stack to hold operators
+    const stack = new Stack();
+    // initialize the postfix notation as an empty string
+    let postfix = "";
+    // initialize a variable to keep track of the number of open parenthesis
+    let openParenthesis = 0;
+    // iterate through the infix notation
+    for (let i = 0; i < infix.length; i++) {
+      let char = infix[i];
+      // if the character is a number, add it to the postfix notation
+      if (!isNaN(char)) {
+        postfix += char;
+        // if the character is an operator
+      } else if (char in precedence) {
+        // while the stack is not empty and the current operator has lower or equal precedence to the operator at the top of the stack
+        while (
+          !stack.isEmpty() &&
+          precedence[char] <= precedence[stack.peek()]
+        ) {
+          // pop the operator at the top of the stack and add it to the postfix notation
+          postfix += " " + stack.pop();
+        }
+        // add a space after the operator
+        postfix += " ";
+        // push the current operator onto the stack
+        stack.push(char);
+        // if the character is an open parenthesis
+      } else if (char === "(") {
+        // increment the openParenthesis counter
+        openParenthesis++;
+        // push the parenthesis onto the stack
+        stack.push(char);
+        // if the character is a close parenthesis
+      } else if (char === ")") {
+        // decrement the openParenthesis counter
+        openParenthesis--;
+        // if the openParenthesis counter is less than 0, throw an error
+        if (openParenthesis < 0) {
+          this.setResult(EquationSolver.ERROR_MISMATCHED_PARENTHESIS());
+        }
+        // while the stack is not empty and the top of the stack is not an open parenthesis
+        while (!stack.isEmpty() && stack.peek() !== "(") {
+          // pop the operator at the top of the stack and add it to the postfix notation
+          postfix += " " + stack.pop();
+        }
+        //pop the open parenthesis
+        stack.pop();
+        // if the character is not a number, operator or parenthesis
+      } else {
+        // throw an error with the invalid character
+        this.setResult(EquationSolver.ERROR_INVALID_CHARACTER(char));
       }
-      // add a space after the operator
-      postfix += " ";
-      // push the current operator onto the stack
-      stack.push(char);
-      prev = char;
-      // if the character is an open parenthesis
-    } else if (char === "(") {
-      // increment the openParenthesis counter
-      openParenthesis++;
-      // push the parenthesis onto the stack
-      stack.push(char);
-      prev = char;
-      // if the character is a close parenthesis
-    } else if (char === ")") {
-      // decrement the openParenthesis counter
-      openParenthesis--;
-      // if the openParenthesis counter is less than 0, throw an error
-      if (openParenthesis < 0) {
-        throw new Error(`Mismatched Parentheses in infix expression`);
-      }
-      // while the stack is not empty and the top of the stack is not an open parenthesis
-      while (!stack.isEmpty() && stack.peek() !== "(") {
-        // pop the operator at the top of the stack and add it to the postfix notation
-        postfix += " " + stack.pop();
-      }
-      //pop the open parenthesis
-      stack.pop();
-      prev = char;
-      // if the character is not a number, operator or parenthesis
-    } else {
-      // throw an error with the invalid character
-      throw new Error(`Invalid character ${char} in infix expression`);
     }
+    // if the openParenthesis counter is not 0, throw an error
+    if (openParenthesis !== 0) {
+      this.setResult(EquationSolver.ERROR_MISMATCHED_PARENTHESIS());
+    }
+    // while the stack is not empty
+    while (!stack.isEmpty()) {
+      // pop the operator at the top of the stack and add it to the postfix notation
+      postfix += " " + stack.pop();
+    }
+
+    // return the postfix notation
+    return postfix;
   }
-  // if the openParenthesis counter is not 0, throw an error
-  if (openParenthesis !== 0) {
-    throw new Error(`Mismatched Parentheses in infix expression`);
-  }
-  // while the stack is not empty
-  while (!stack.isEmpty()) {
-    // pop the operator at the top of the stack and add it to the postfix notation
-    postfix += " " + stack.pop();
-  }
-  // return the postfix notation
-  return postfix;
 }
 
+// Quick testing
 // console.log(infixToPostfix("(1 + 2) * 3")); // Output: 1 2 + 3 *
 // console.log(infixToPostfix("2^3 + 4"))  // Output: 2 3 ^ 4 +
 
 // Debugging and testing of Infix to Postfix conversion
-try {
-  // const infixExpression1 = "11 + 2 * 3";
-  // const postfixNotation1 = infixToPostfix(infixExpression1);
-  // console.log(`Infix1: ${infixExpression1} => Postfix1: ${postfixNotation1}`);
-  // const infixExpression2 = "(1 + 2) * 3";
-  // const postfixNotation2 = infixToPostfix(infixExpression2);
-  // console.log(`Infix2: ${infixExpression2} => Postfix2: ${postfixNotation2}`);
-  // const infixExpression3 = "1 * (2 + 3)";
-  // const postfixNotation3 = infixToPostfix(infixExpression3);
-  // console.log(`Infix3: ${infixExpression3} => Postfix3: ${postfixNotation3}`);
-  // const infixExpression4 = "3 ^ (4 - 2) + 1";
-  // const postfixNotation4 = infixToPostfix(infixExpression4);
-  // console.log(`Infix4: ${infixExpression4} => Postfix4: ${postfixNotation4}`);
-  // const infixExpression5 = "1+2*";
-  // const postfixNotation5 = infixToPostfix(infixExpression5);
-  // console.log(`Infix5: ${infixExpression5} => Postfix5: ${postfixNotation5}`);
-  // const infixExpression6 = "1+2*3)";
-  // const postfixNotation6 = infixToPostfix(infixExpression6);
-  // console.log(`Infix6: ${infixExpression6} => Postfix6: ${postfixNotation6}`);
-  // const infixExpression7 = "(2.5 + 3.14) * (4.7 - 1.23)";
-  // const postfixNotation7 = infixToPostfix(infixExpression7);
-  // console.log(`Infix7: ${infixExpression7} => Postfix7: ${postfixNotation7}`);
-  // const infixExpression8 = "1+2#3";
-  // const postfixNotation8 = infixToPostfix(infixExpression8);
-  // console.log(`Infix8: ${infixExpression8} => Postfix8: ${postfixNotation8}`);
-} catch (e) {
-  console.log(e);
-}
+// try {
+//   const infixExpression1 = "11 + 2 * 3"; // Output: 11 2 3 * +
+//   const postfixNotation1 = infixToPostfix(infixExpression1);
+//   console.log(`Infix1: ${infixExpression1} => Postfix1: ${postfixNotation1}`);
+
+//   const infixExpression2 = "(1 + 2) * 3"; // Output: 1 2 + 3 *
+//   const postfixNotation2 = infixToPostfix(infixExpression2);
+//   console.log(`Infix2: ${infixExpression2} => Postfix2: ${postfixNotation2}`);
+
+//   const infixExpression3 = "1 * (2 + 3)"; // Outpu: 1 2 3 + *
+//   const postfixNotation3 = infixToPostfix(infixExpression3);
+//   console.log(`Infix3: ${infixExpression3} => Postfix3: ${postfixNotation3}`);
+
+//   const infixExpression4 = "3 ^ (4 - 2) + 1"; // Output: 3 4 2 - ^ 1 +
+//   const postfixNotation4 = infixToPostfix(infixExpression4);
+//   console.log(`Infix4: ${infixExpression4} => Postfix4: ${postfixNotation4}`);
+
+//   const infixExpression5 = "1+2*"; // Output: 1 2 * +
+//   const postfixNotation5 = infixToPostfix(infixExpression5);
+//   console.log(`Infix5: ${infixExpression5} => Postfix5: ${postfixNotation5}`);
+
+//   const infixExpression6 = "1+2*3)"; // Output: "Mismatched Parentheses in infix expression"
+//   const postfixNotation6 = infixToPostfix(infixExpression6);
+//   console.log(`Infix6: ${infixExpression6} => Postfix6: ${postfixNotation6}`);
+
+//   const infixExpression7 = "(2.5 + 3.14) * (4.7 - 1.23)";
+//   const postfixNotation7 = infixToPostfix(infixExpression7);
+//   console.log(`Infix7: ${infixExpression7} => Postfix7: ${postfixNotation7}`);
+
+//   const infixExpression8 = "1+2#3";
+//   const postfixNotation8 = infixToPostfix(infixExpression8);
+//   console.log(`Infix8: ${infixExpression8} => Postfix8: ${postfixNotation8}`);
+// } catch (e) {
+//   console.log(e);
+// }
 
 // -----------------------------------------------  UPDATED -----------------------------------------
 // ---------------------------------------------- Evaluation of Postfix Expression ------------------------------------------
@@ -759,6 +848,54 @@ try {
 // }
 
 // Working function with comments
+// /**
+//  * This function evaluates the postfix notation and returns the result
+//  * @param {string} postfix - the postfix notation to evaluate
+//  * @return {number} result - the evaluated result
+//  */
+// function evaluatePostfix(postfix) {
+//   // split the postfix notation into an array of strings
+//   postfix = postfix.split(" ");
+//   // create a stack to hold operands
+//   const stack = new Stack();
+
+//   // iterate through the postfix array
+//   for (let i = 0; i < postfix.length; i++) {
+//     let char = postfix[i];
+//     // if the character is a number, push it onto the stack
+//     if (!isNaN(char)) {
+//       stack.push(char);
+//     } else {
+//       // if the character is an operator, pop the last two operands from the stack
+//       let operand1 = stack.pop();
+//       let operand2 = stack.pop();
+//       // parse the operands as floats
+//       operand1 = parseFloat(operand1);
+//       operand2 = parseFloat(operand2);
+//       // perform the operation based on the operator
+//       switch (char) {
+//         case "+":
+//           stack.push(operand2 + operand1);
+//           break;
+//         case "-":
+//           stack.push(operand2 - operand1);
+//           break;
+//         case "*":
+//           stack.push(operand2 * operand1);
+//           break;
+//         case "/":
+//           stack.push(operand2 / operand1);
+//           break;
+//         case "^":
+//           stack.push(Math.pow(operand2, operand1));
+//           break;
+//       }
+//     }
+//   }
+//   // return the result which is the last element of the stack
+//   return stack.pop();
+// }
+
 /**
  * This function evaluates the postfix notation and returns the result
  * @param {string} postfix - the postfix notation to evaluate
@@ -807,10 +944,6 @@ function evaluatePostfix(postfix) {
   return stack.pop();
 }
 
-// console.log(evaluatePostfix("1 2 + 3 *")); // Output: 9
-// console.log(evaluatePostfix("2 3 ^")); // Output: 8
-// console.log(evaluatePostfix("2 3 ^ 4 +")); // Output: 12
-
 // Debugging and testing of Postfix evaluation
 // try {
 // const postfixExpression1 = "2  +  3   4 *";
@@ -834,6 +967,7 @@ function evaluatePostfix(postfix) {
 //   console.log(e.message);
 // }
 
+// Test Cases for entire program
 try {
   // Test Case 1
   const infixExpression1 = "(1 + 2) * 3"; // Output: 9
@@ -848,7 +982,7 @@ try {
   const evaluatedExpression2 = evaluatePostfix(postfixNotation2);
   console.log(`Evaluted : ${evaluatedExpression2}`);
   // Test Case 3
-  const infixExpression3 = "2 * 3 + 4"; // Output: 10
+  const infixExpression3 = "2 + 3 * 4"; // Output: 10
   const postfixNotation3 = infixToPostfix(infixExpression3);
   console.log(`\nInfix3: ${infixExpression3} => Postfix3: ${postfixNotation3}`);
   const evaluatedExpression3 = evaluatePostfix(postfixNotation3);
@@ -856,7 +990,7 @@ try {
   // Test Case 4
   const infixExpression4 = "( 2 + 3 ) * 4"; // Output: 20
   const postfixNotation4 = infixToPostfix(infixExpression4);
-  console.log(`\nInfix4: ${infixExpression3} => Postfix4: ${postfixNotation4}`);
+  console.log(`\nInfix4: ${infixExpression4} => Postfix4: ${postfixNotation4}`);
   const evaluatedExpression4 = evaluatePostfix(postfixNotation4);
   console.log(`Evaluted : ${evaluatedExpression4}`);
   // Test Case 5
@@ -865,6 +999,13 @@ try {
   console.log(`\nInfix5: ${infixExpression5} => Postfix5: ${postfixNotation5}`);
   const evaluatedExpression5 = evaluatePostfix(postfixNotation5);
   console.log(`Evaluted : ${evaluatedExpression5}`);
+
+  // Test Case 6
+  const infixExpression6 = "3 ^ (4 - 2) + 1"; // Output: 10
+  const postfixNotation6 = infixToPostfix(infixExpression6);
+  console.log(`\nInfix5: ${infixExpression6} => Postfix5: ${postfixNotation6}`);
+  const evaluatedExpression6 = evaluatePostfix(postfixNotation6);
+  console.log(`Evaluted : ${evaluatedExpression6}`);
 } catch (e) {
   console.log(e.message);
 }
