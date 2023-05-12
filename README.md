@@ -6,10 +6,10 @@ Welcome to the Equation Solver repository! This project is a simple calculator t
 
 The Equation Solver has the following features:
 
-- Supports basic arithmetic operations: addition (+), subtraction (-), multiplication (*), and division (/)
+- Supports basic arithmetic operations: addition (+), subtraction (-), multiplication (\*), and division (/)
 - Supports brackets to group operations and prioritize calculations
 - Supports exponentiation (^) to calculate powers of numbers
-- Provides accurate results for inputted expressions
+- Provides results for inputted expressions
 
 ## How It Works
 
